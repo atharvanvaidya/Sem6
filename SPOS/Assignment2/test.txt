@@ -1,1 +1,48 @@
 This is a Test File
+list.addAll(words);
+Now you would want to compare the retrieved list against a Master list containing all your records.
+
+// Compare the 2 lists, assuming your file list has less number of
+// records
+masterList.removeAll(list);
+The above statement can be used in reverse too; in case the file holds the master list of words. Alternatively, you can store the 2 lists in temporary lists and compare in whatsoever way your require.
+
+Here is the complete code:
+
+public static void main(String[] args) {
+        String line;
+
+        // List of all the words read from the file
+        List<String> list = new ArrayList<String>();
+        // Your original mast list of words against which you want to compare
+        List<String> masterList = new ArrayList<String>(Arrays.asList("cleaner",
+                "code", "java", "read", "write", "market", "python", "snake",
+                "stack", "overflow"));
+
+        BufferedReader reader;
+
+        try {
+            reader = new BufferedReader(new FileReader("testing.txt"));
+
+            while ((line = reader.readLine()) != null) {
+                // Add all the words split by a ; to the list
+                List<String> words = Arrays.asList(line.split(";"));
+                list.addAll(words);
+            }
+
+            // Compare the 2 lists, assuming your file list has less number of
+            // records
+            masterList.removeAll(list);
+
+            System.out.println(masterList);
+
+            reader.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
