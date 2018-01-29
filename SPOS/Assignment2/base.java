@@ -22,11 +22,14 @@ class base
 	public static void main(String[] args)
 	{
 		//List<String> FullLine;
-		String line;
+		String line, lineMot;
+		Integer Location = new Integer(100);
 		try
 		{
 			BufferedReader reader = new BufferedReader(new FileReader("input.txt"));
+			//BufferedReader readerMot = new BufferedReader(new FileReader("mot.txt"));
 			BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"));
+			
 				while ((line = reader.readLine()) != null) 
 				{
 					//List<String> words = Arrays.asList(line.split(";"));
@@ -34,21 +37,51 @@ class base
 					//System.out.println(line);
 					//StringTokenizer st = new StringTokenizer(line);
 					String[] FullLine = line.split(" ");
-					for(String token:FullLine)
+					writer.write(Location+" ");
+					//if(FullLine[0].equals("\t"))
+					switch(FullLine[1])
 					{
-						System.out.println(token);
+						case "START":
+						{
+							Location = Integer.parseInt(FullLine[2]);
+						}
+						
+						case "DC":
+						{
+							if(FullLine[2].charAt(0) == 'H')
+							{
+								Location += 2;
+							}
+							else if(FullLine[2].charAt(0) == 'F')
+							{
+								Location += 4;
+							}
+							else if(FullLine[2].charAt(0) == 'D')
+							{
+								Location += 8;
+							}
+						}
+						case "DS":
+						{
+							
+							
+						}
+						case "LTORG":
+						{
+							
+							
+						}
 					}
-					System.out.println("Number of Tokens:"+FullLine.length);
-					//IF the Line Contains Symbols
-					if(FullLine.length == 3)
+					BufferedReader readerMot = new BufferedReader(new FileReader("mot.txt"));
+					while((lineMot = readerMot.readLine()) != null)
 					{
-						System.out.println("This Contains Symbol!");
+						String[] MotLine = lineMot.split(" ");
+						if(FullLine[0].equals(MotLine[0]))
+						{
+							Location += Integer.parseInt(MotLine[2]);
+						}
 					}
-					//If the Line Does Not Contain Symbols
-					else if(FullLine.length == 2)
-					{
-						System.out.println("This Does NOT Contain Symbol!");
-					}
+					readerMot.close();
 					writer.write(line);
 					writer.write("\n");
 				}
