@@ -63,7 +63,7 @@ class base
 		{
 			BufferedReader reader = new BufferedReader(new FileReader("input.txt"));
 			//BufferedReader readerMot = new BufferedReader(new FileReader("mot.txt"));
-			BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"));
+			BufferedWriter writer = new BufferedWriter(new FileWriter("intermediate.txt"));
 			BufferedWriter writerST = new BufferedWriter(new FileWriter("symbol.txt"));
 			List <SymbolTable> l = new ArrayList<SymbolTable>();
 			while ((line = reader.readLine()) != null) 
