@@ -50,8 +50,60 @@ class SymbolTable
 	}
 	
 }
+
+class LiteralTable
+{
+	String literal;
+	int address;
+	int length;
+	
+	LiteralTable(String literal , int address , int length)
+	{
+		this.literal = literal;
+		this.address = address;
+		this.length = length;
+	}
+	void ShowLiteralTable()
+	{
+		System.out.println(this.literal + " ");
+		System.out.println(this.address + " ");
+		System.out.println(this.length);
+	}
+	String getLiteral()
+	{
+		return this.literal;
+	}
+	int getLiteralAddress()
+	{
+		return this.address;
+	}
+	int getLiteralLength()
+	{
+		return this.length;
+	}
+}
+
 class base
 {
+	static int returnLength(String s)
+	{
+		if(s.charAt(0) == 'H')
+		{
+			return 2;
+		}
+		else if(s.charAt(0) == 'F')
+		{
+			return 4;
+		}
+		else if(s.charAt(0) == 'D')
+		{
+			return 8;
+		}
+		else
+		{
+			return 0;
+		}
+	}
 	public static void main(String[] args)
 	{
 		//List<String> FullLine;
@@ -65,7 +117,8 @@ class base
 			//BufferedReader readerMot = new BufferedReader(new FileReader("mot.txt"));
 			BufferedWriter writer = new BufferedWriter(new FileWriter("intermediate.txt"));
 			BufferedWriter writerST = new BufferedWriter(new FileWriter("symbol.txt"));
-			List <SymbolTable> l = new ArrayList<SymbolTable>();
+			List <SymbolTable> l = new ArrayList <SymbolTable> ();
+			List <LiteralTable> l1 = new ArrayList <LiteralTable> ();
 			while ((line = reader.readLine()) != null) 
 			{
 				//List<String> words = Arrays.asList(line.split(";"));
@@ -93,21 +146,8 @@ class base
 					{
 						Integer val = new Integer(Integer.parseInt(FullLine[2].substring(FullLine[2].indexOf("\'")+1,FullLine[2].lastIndexOf("\'"))));
 						int Loc = Location;
-						if(FullLine[2].charAt(0) == 'H')
-						{
-							len = 2;
-							Location += 2;
-						}
-						else if(FullLine[2].charAt(0) == 'F')
-						{
-							len = 4;
-							Location += 4;
-						}
-						else if(FullLine[2].charAt(0) == 'D')
-						{
-							len = 8;
-							Location += 8;
-						}
+						len = returnLength(FullLine[2]);
+						Location += len;
 						SymbolTable obj = new SymbolTable(FullLine[0],Loc,val,len,'R');
 						l.add(obj);
 						//obj.ShowSymbolEntry();
@@ -121,8 +161,28 @@ class base
 					}
 					case "LTORG":
 					{
+						while(Location % 8 != 0)
+						{
+							Location++;
+						}
 						
 						break c;
+					}
+				}
+				if(FullLine.length == 3)
+				{
+					//System.out.println(FullLine[2]);
+				}
+				else
+				{
+					if(FullLine[1].indexOf("=") != -1)
+					{
+						//System.out.println(FullLine[1].split("=")[1]);
+						String temp = FullLine[1].split("=")[1];
+						//System.out.println(temp.substring(2,temp.length()-1));
+						String content = temp.substring(2,temp.length()-1);
+						LiteralTable ltobj = new LiteralTable(content , 0 , returnLength(temp));
+						ltobj.ShowLiteralTable();
 					}
 				}
 				BufferedReader readerMot = new BufferedReader(new FileReader("mot.txt"));
